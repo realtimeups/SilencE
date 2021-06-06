@@ -1,0 +1,12 @@
+{
+	"default_prefix": "s!",
+    "geniusapi": "u1aFvFNOzTCY8liDSu95SR-gXkd10qQIajdOyDYl0NqHMGoMy7rMAAUb9dDSh4kz",
+    "emoji": {
+        "play": "▶️",
+        "stop": "⏹️",
+        "queue": "📄",
+        "success": "☑️",
+        "repeat": "🔁",
+        "error": "❌"
+    }
+}
