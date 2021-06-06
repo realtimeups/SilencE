@@ -1,15 +1,17 @@
 module.exports = {
-    name: "pause",
-    aliases: ["pause", "hold"],
-    inVoiceChannel: true,
-    run: async (client, message, args) => {
-        const queue = client.distube.getQueue(message)
-        if (!queue) return message.channel.send(`${client.emotes.error} | There is nothing in the queue right now!`)
-        if (queue.pause) {
-            client.distube.resume(message)
-            return message.channel.send("Resumed the song for you :)")
-        }
-        client.distube.pause(message)
-        message.channel.send("Paused the song for you :)")
+    name: 'pause',
+    aliases: [],
+    run: async(client, message) => {
+        if (!message.member.voice.channel) return message.channel.send(`${client.emotes.error} -${await client.translate(`You're not in a voice channel !`,message)} `);
+
+        if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return message.channel.send(`${client.emotes.error} - ${await client.translate('You are not in the same voice channel !',message)}`);
+
+        if (!client.player.getQueue(message)) return message.channel.send(`${client.emotes.error} - ${await client.translate('No music currently playing !',message)}`);
+
+        if (client.player.getQueue(message).paused) return message.channel.send(`${client.emotes.error} - ${await client.translate('The music is already paused !',message)}`);
+
+        const success = client.player.pause(message);
+
+        if (success) message.channel.send(`${client.emotes.success} - ${await client.translate('Song',message)} ${client.player.getQueue(message).playing.title} ${await client.translate('paused !',message)}`);
     }
 }

@@ -1,6 +1,7 @@
 module.exports = {
-    name: 'skip',
-    aliases: ['sk'],
+    name: 'clear-queue',
+    aliases: ['cq'],
+
     run: async(client, message) => {
         if (!message.member.voice.channel) return message.channel.send(`${client.emotes.error} - ${await client.translate(`You're not in a voice channel !`,message)}`);
 
@@ -8,8 +9,10 @@ module.exports = {
 
         if (!client.player.getQueue(message)) return message.channel.send(`${client.emotes.error} -${await client.translate('No music currently playing !',message)} `);
 
-        const success = client.player.skip(message);
+        if (client.player.getQueue(message).tracks.length <= 1) return message.channel.send(`${client.emotes.error} - ${await client.translate('There is only one song in the queue.',message)}`);
 
-        if (success) message.channel.send(`${client.emotes.success} - ${await client.translate('The current music has just been **skipped** !',message)}`);
+        client.player.clearQueue(message);
+
+        message.channel.send(`${client.emotes.success} - ${await client.translate('The queue has just been **removed** !',message)}`);
     }
 }
